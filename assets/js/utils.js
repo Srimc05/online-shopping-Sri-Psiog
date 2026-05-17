@@ -51,3 +51,78 @@ export function debounce(fn, delay = 300) {
     timer = setTimeout(() => fn(...args), delay);
   };
 }
+
+export function paginate(items, currentPage = 1, pageSize = 8) {
+  const totalItems = items.length;
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  const start = (currentPage - 1) * pageSize;
+  const end = start + pageSize;
+
+  return {
+    items: items.slice(start, end),
+    totalItems,
+    totalPages,
+    currentPage,
+    hasPrev: currentPage > 1,
+    hasNext: currentPage < totalPages
+  };
+}
+
+export function renderPagination({
+  container,
+  currentPage,
+  totalPages,
+  onPageChange
+}) {
+  if (totalPages <= 1) {
+    container.innerHTML = "";
+    return;
+  }
+
+  let html = `
+    <button
+      class="btn btn-secondary btn-sm"
+      ${currentPage === 1 ? "disabled" : ""}
+      data-page="${currentPage - 1}"
+    >
+      Prev
+    </button>
+  `;
+
+  for (let i = 1; i <= totalPages; i++) {
+    html += `
+      <button
+        class="btn ${
+          i === currentPage
+            ? "btn-primary"
+            : "btn-secondary"
+        } btn-sm"
+        data-page="${i}"
+      >
+        ${i}
+      </button>
+    `;
+  }
+
+  html += `
+    <button
+      class="btn btn-secondary btn-sm"
+      ${currentPage === totalPages ? "disabled" : ""}
+      data-page="${currentPage + 1}"
+    >
+      Next
+    </button>
+  `;
+
+  container.innerHTML = html;
+
+  container.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const page = Number(button.dataset.page);
+      if (page >= 1 && page <= totalPages) {
+        onPageChange(page);
+      }
+    });
+  });
+}

@@ -1,3 +1,5 @@
+// assets/js/customer/invoice.js
+
 import { logout } from "../auth.js";
 import { requireRole } from "../guards.js";
 import { USER_ROLES } from "../constants.js";
@@ -51,12 +53,12 @@ async function loadInvoice() {
 
   invoiceContainer.innerHTML = `
     <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:2rem;
-      flex-wrap:wrap;
-      margin-bottom:2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
     ">
       <div>
         <h1>Invoice</h1>
@@ -64,20 +66,30 @@ async function loadInvoice() {
         <p>${formatDate(order.createdAt)}</p>
       </div>
 
-      <button
-        onclick="window.print()"
-        class="btn btn-secondary"
-      >
-        Print Invoice
-      </button>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <button
+          id="downloadPdfBtn"
+          class="btn btn-secondary"
+        >
+          Download PDF
+        </button>
+
+        <button
+          id="printInvoiceBtn"
+          class="btn btn-secondary"
+        >
+          Print Invoice
+        </button>
+      </div>
     </div>
 
-    <hr style="margin:1.5rem 0;">
+    <hr style="margin: 1.5rem 0;">
 
-    <div style="margin-bottom:2rem;">
+    <div style="margin-bottom: 2rem;">
       <h3>Customer Details</h3>
       <p>${order.customerName || "-"}</p>
       <p>${order.customerEmail}</p>
+      <p>Payment Type: ${order.paymentType}</p>
     </div>
 
     <table class="table">
@@ -95,41 +107,55 @@ async function loadInvoice() {
     </table>
 
     <div style="
-      margin-top:2rem;
-      margin-left:auto;
-      max-width:300px;
+      margin-top: 2rem;
+      margin-left: auto;
+      max-width: 300px;
     ">
       <div style="
-        display:flex;
-        justify-content:space-between;
-        margin-bottom:0.5rem;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
       ">
         <span>Subtotal</span>
         <span>${formatCurrency(order.subtotal)}</span>
       </div>
 
       <div style="
-        display:flex;
-        justify-content:space-between;
-        margin-bottom:0.5rem;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
       ">
-        <span>Tax</span>
+        <span>Tax (18%)</span>
         <span>${formatCurrency(order.tax)}</span>
       </div>
 
       <div style="
-        display:flex;
-        justify-content:space-between;
-        font-weight:700;
-        font-size:1.1rem;
-        border-top:1px solid #e2e8f0;
-        padding-top:0.75rem;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+        font-size: 1.1rem;
+        border-top: 1px solid #e2e8f0;
+        padding-top: 0.75rem;
       ">
         <span>Grand Total</span>
         <span>${formatCurrency(order.grandTotal)}</span>
       </div>
     </div>
   `;
+
+  // Print button
+  document
+    .getElementById("printInvoiceBtn")
+    .addEventListener("click", () => {
+      window.print();
+    });
+
+  // Download PDF button
+  document
+    .getElementById("downloadPdfBtn")
+    .addEventListener("click", () => {
+      window.print();
+    });
 }
 
 // Logout

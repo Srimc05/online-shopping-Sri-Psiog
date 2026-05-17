@@ -197,3 +197,14 @@ select.form-control {
 .card form .form-group:last-of-type {
   margin-bottom: 1.5rem;
 }
+
+
+/* Low Stock Alert Styling */
+#lowStockContainer p {
+  margin: 0;
+}
+
+#lowStockContainer .badge-danger {
+  min-width: 48px;
+  text-align: center;
+}

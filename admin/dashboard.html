@@ -1,3 +1,5 @@
+<!-- admin/dashboard.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,6 +47,7 @@
         <p>Overview of your online shopping system.</p>
       </div>
 
+      <!-- Stats Cards -->
       <div class="stats-grid">
         <div class="stat-card">
           <h3>Total Products</h3>
@@ -66,9 +69,34 @@
           <p id="totalSales">₹0</p>
         </div>
       </div>
+
+      <!-- Low Stock Alerts -->
+      <div class="card" style="margin-top: 2rem;">
+        <h3 style="margin-bottom: 1rem;">Low Stock Alerts</h3>
+        <div id="lowStockContainer">
+          <p style="color: #64748b;">Loading low stock products...</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 2rem;">
+  <h3 style="margin-bottom: 1rem;">Top Selling Products</h3>
+  <div id="topSellingContainer">
+    <p style="color: #64748b;">Loading top selling products...</p>
+  </div>
+</div>
+
+
+<div class="card" style="margin-top: 2rem;">
+  <h3 style="margin-bottom: 1rem;">Sales Overview</h3>
+  <canvas id="salesChart" height="100"></canvas>
+</div>
+
+
     </main>
   </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="module" src="../assets/js/admin/dashboard.js"></script>
   <script type="module" src="../assets/js/admin/dashboard.js"></script>
 </body>
 </html>
