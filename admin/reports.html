@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reports</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="sidebar-logo">Shop Admin</h2>
+
+      <nav class="sidebar-nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="categories.html">Categories</a>
+        <a href="products.html">Products</a>
+        <a href="customers.html">Customers</a>
+        <a href="reports.html" class="active">Reports</a>
+      </nav>
+
+      <button id="logoutBtn" class="btn btn-secondary sidebar-logout">
+        Logout
+      </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="page-header">
+        <h1>Reports</h1>
+        <p>Sales, inventory, and customer insights.</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Total Revenue</h3>
+          <p id="reportTotalRevenue">₹0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Total Orders</h3>
+          <p id="reportTotalOrders">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Cash Orders</h3>
+          <p id="reportCashOrders">0</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Credit Orders</h3>
+          <p id="reportCreditOrders">0</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="../assets/js/admin/reports.js"></script>
+</body>
+</html>

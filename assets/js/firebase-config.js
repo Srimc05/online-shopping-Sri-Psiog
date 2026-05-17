@@ -1,13 +1,18 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
+// assets/js/firebase-config.js
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
 import {
   getAuth,
   GoogleAuthProvider
-} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
 import {
   getFirestore,
   serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js';
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
+// Your Firebase project configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDHK98k0OTsAWXJySLRwb7DCJSpSLzcym4",
   authDomain: "online-shopping-sri-psiog.firebaseapp.com",
@@ -18,12 +23,15 @@ const firebaseConfig = {
   measurementId: "G-YMBFWQNYM8"
 };
 
-// Initialize Firebase
+// Initialize Firebase app
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+// Initialize Firebase services
+const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
+// Export services
 export {
   app,
   auth,

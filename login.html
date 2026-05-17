@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Online Shopping</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/auth.css">
+</head>
+<body class="auth-page">
+  <div id="globalLoader" class="loader-overlay">
+    <div class="spinner"></div>
+  </div>
+
+ <div class="auth-card">
+      <h2 style="margin-bottom: 0.5rem;">Welcome Back</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        Login to your account
+      </p>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control"
+            required
+          />
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          Login
+        </button>
+      </form>
+
+      <button
+        id="googleBtn"
+        type="button"
+        class="btn btn-secondary"
+        style="width: 100%; margin-top: 1rem;"
+      >
+        Continue with Google
+      </button>
+
+      <p style="margin-top: 1rem; text-align: center;">
+        <a href="forgot-password.html">Forgot Password?</a>
+      </p>
+
+      <p style="margin-top: 0.5rem; text-align: center;">
+        Don’t have an account?
+        <a href="signup.html">Sign Up</a>
+      </p>
+  
+  </div>
+
+  <script type="module">
+    import { login, loginWithGoogle } from "./assets/js/auth.js";
+
+    document
+      .getElementById("loginForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        await login(email, password);
+      });
+
+    document
+      .getElementById("googleBtn")
+      .addEventListener("click", loginWithGoogle);
+  </script>
+</body>
+</html>
