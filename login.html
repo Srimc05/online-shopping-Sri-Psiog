@@ -72,23 +72,56 @@
   
   </div>
 
-  <script type="module">
-    import { login, loginWithGoogle } from "./assets/js/auth.js";
+<script type="module">
+  import { login, loginWithGoogle } from "./assets/js/auth.js";
 
-    document
-      .getElementById("loginForm")
-      .addEventListener("submit", async (e) => {
-        e.preventDefault();
+  const loginForm = document.getElementById("loginForm");
+  const googleBtn = document.getElementById("googleBtn");
 
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value;
+  // Email/Password Login
+  loginForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        await login(email, password);
-      });
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
-    document
-      .getElementById("googleBtn")
-      .addEventListener("click", loginWithGoogle);
-  </script>
+    try {
+      await login(email, password);
+
+      // Fallback redirect in case auth.js does not redirect
+      setTimeout(() => {
+        if (
+          window.location.pathname.endsWith("login.html") ||
+          window.location.pathname === "/"
+        ) {
+          window.location.href = "customer/home.html";
+        }
+      }, 1500);
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert(error.message);
+    }
+  });
+
+  // Google Login
+  googleBtn.addEventListener("click", async () => {
+    try {
+      await loginWithGoogle();
+
+      // Fallback redirect
+      setTimeout(() => {
+        if (
+          window.location.pathname.endsWith("login.html") ||
+          window.location.pathname === "/"
+        ) {
+          window.location.href = "customer/home.html";
+        }
+      }, 1500);
+    } catch (error) {
+      console.error("Google Sign-In failed:", error);
+      alert(error.message);
+    }
+  });
+</script>
 </body>
 </html>

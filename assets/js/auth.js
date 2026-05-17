@@ -1,3 +1,5 @@
+// assets/js/auth.js
+
 import {
   auth,
   db,
@@ -15,8 +17,7 @@ import {
 import {
   showToast,
   showLoader,
-  hideLoader,
-  redirect
+  hideLoader
 } from "./utils.js";
 
 import {
@@ -40,6 +41,10 @@ function getRoleByEmail(email) {
     : USER_ROLES.CUSTOMER;
 }
 
+function redirectTo(path) {
+  window.location.href = path;
+}
+
 export async function createUserProfile(user, extra = {}) {
   const role = getRoleByEmail(user.email);
 
@@ -51,7 +56,9 @@ export async function createUserProfile(user, extra = {}) {
       email: user.email,
       role,
       creditLimit:
-        role === USER_ROLES.CUSTOMER ? DEFAULT_CREDIT_LIMIT : null,
+        role === USER_ROLES.CUSTOMER
+          ? DEFAULT_CREDIT_LIMIT
+          : null,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     },
@@ -59,22 +66,59 @@ export async function createUserProfile(user, extra = {}) {
   );
 }
 
+export async function getCurrentUserProfile() {
+  const user = auth.currentUser;
+
+  if (!user) return null;
+
+  const snapshot = await getDoc(
+    doc(db, COLLECTIONS.USERS, user.uid)
+  );
+
+  if (!snapshot.exists()) {
+    return null;
+  }
+
+  return snapshot.data();
+}
+
+export async function redirectByRole() {
+  const profile = await getCurrentUserProfile();
+
+  if (!profile) {
+    throw new Error("User profile not found");
+  }
+
+  if (profile.role === USER_ROLES.ADMIN) {
+    redirectTo("/admin/dashboard.html");
+  } else {
+    redirectTo("/customer/home.html");
+  }
+}
+
 export async function signUp(name, email, password) {
   showLoader();
 
   try {
-    const credential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    );
+    const credential =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
 
     await createUserProfile(credential.user, { name });
 
     showToast("Account created successfully");
+
     await redirectByRole();
   } catch (error) {
-    showToast(error.message, "error");
+    console.error("Signup error:", error);
+if (error.code === "auth/invalid-credential") {
+  showToast("Invalid email or password", "error");
+} else {
+  showToast(error.message, "error");
+}
     throw error;
   } finally {
     hideLoader();
@@ -85,10 +129,36 @@ export async function login(email, password) {
   showLoader();
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const credential =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+    const snapshot = await getDoc(
+      doc(
+        db,
+        COLLECTIONS.USERS,
+        credential.user.uid
+      )
+    );
+
+    if (!snapshot.exists()) {
+      throw new Error("User profile not found");
+    }
+
+    const profile = snapshot.data();
+
     showToast("Login successful");
-    await redirectByRole();
+
+    if (profile.role === USER_ROLES.ADMIN) {
+      redirectTo("/admin/dashboard.html");
+    } else {
+      redirectTo("/customer/home.html");
+    }
   } catch (error) {
+    console.error("Login error:", error);
     showToast(error.message, "error");
     throw error;
   } finally {
@@ -100,11 +170,24 @@ export async function loginWithGoogle() {
   showLoader();
 
   try {
-    const result = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithPopup(
+      auth,
+      googleProvider
+    );
+
     await createUserProfile(result.user);
+
+    const profile = await getCurrentUserProfile();
+
     showToast("Google login successful");
-    await redirectByRole();
+
+    if (profile.role === USER_ROLES.ADMIN) {
+      redirectTo("/admin/dashboard.html");
+    } else {
+      redirectTo("/customer/home.html");
+    }
   } catch (error) {
+    console.error("Google login error:", error);
     showToast(error.message, "error");
     throw error;
   } finally {
@@ -117,6 +200,7 @@ export async function resetPassword(email) {
     await sendPasswordResetEmail(auth, email);
     showToast("Password reset email sent");
   } catch (error) {
+    console.error("Reset password error:", error);
     showToast(error.message, "error");
     throw error;
   }
@@ -124,28 +208,7 @@ export async function resetPassword(email) {
 
 export async function logout() {
   await signOut(auth);
-  redirect("/login.html");
-}
-
-export async function getCurrentUserProfile() {
-  const user = auth.currentUser;
-  if (!user) return null;
-
-  const snapshot = await getDoc(doc(db, COLLECTIONS.USERS, user.uid));
-
-  return snapshot.exists() ? snapshot.data() : null;
-}
-
-export async function redirectByRole() {
-  const profile = await getCurrentUserProfile();
-
-  if (!profile) return;
-
-  if (profile.role === USER_ROLES.ADMIN) {
-    redirect("/admin/dashboard.html");
-  } else {
-    redirect("/customer/home.html");
-  }
+  redirectTo("/login.html");
 }
 
 export function observeAuth(callback) {
