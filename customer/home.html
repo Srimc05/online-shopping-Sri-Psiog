@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop</title>
+
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/customer.css" />
+</head>
+<body>
+  <div id="globalLoader" class="loader-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="shop-header">
+    <div class="container header-inner">
+      <h1 class="shop-logo">Online Shop</h1>
+
+      <nav class="shop-nav">
+        <a href="home.html">Home</a>
+        <a href="cart.html">Cart</a>
+        <a href="orders.html">Orders</a>
+        <button id="logoutBtn" class="btn btn-secondary btn-sm">
+          Logout
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Filters -->
+  <section class="container" style="margin-top: 2rem;">
+    <div class="card filters-card">
+      <input
+        type="text"
+        id="searchInput"
+        class="form-control"
+        placeholder="Search products..."
+      />
+
+      <select id="categoryFilter" class="form-control">
+        <option value="">All Categories</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="container" style="margin-top: 2rem; margin-bottom: 3rem;">
+    <div id="productsGrid" class="products-grid"></div>
+  </section>
+
+  <script type="module" src="../assets/js/customer/home.js"></script>
+</body>
+</html>
