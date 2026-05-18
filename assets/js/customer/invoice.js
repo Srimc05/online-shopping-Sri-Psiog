@@ -1,4 +1,3 @@
-// assets/js/customer/invoice.js
 
 import { logout } from "../auth.js";
 import { requireRole } from "../guards.js";
@@ -12,11 +11,11 @@ import {
 
 import { getOrderById } from "../services/order-service.js";
 
-// DOM Elements
+
 const invoiceContainer = document.getElementById("invoiceContainer");
 const logoutBtn = document.getElementById("logoutBtn");
 
-// Load invoice
+
 async function loadInvoice() {
   const orderId = getQueryParam("id");
 
@@ -143,14 +142,13 @@ async function loadInvoice() {
     </div>
   `;
 
-  // Print button
   document
     .getElementById("printInvoiceBtn")
     .addEventListener("click", () => {
       window.print();
     });
 
-  // Download PDF button
+
   document
     .getElementById("downloadPdfBtn")
     .addEventListener("click", () => {

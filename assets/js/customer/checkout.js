@@ -1,4 +1,4 @@
-// assets/js/customer/checkout.js
+
 
 import { logout } from "../auth.js";
 import { requireRole } from "../guards.js";

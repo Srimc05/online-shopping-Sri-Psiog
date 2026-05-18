@@ -1,8 +1,4 @@
-/* =========================================================
-   CUSTOMER CSS — LUXURY HANDMADE SHIRT STORE
-   Theme: Ivory • Midnight Navy • Antique Gold
-   Font: Poppins
-========================================================= */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
 
@@ -34,9 +30,7 @@
   --lux-transition: all 0.3s ease;
 }
 
-/* =========================================================
-   GLOBAL
-========================================================= */
+
 body {
   font-family: "Poppins", sans-serif;
   background:
@@ -47,9 +41,7 @@ body {
   color: var(--lux-text);
 }
 
-/* =========================================================
-   HEADER
-========================================================= */
+
 .shop-header {
   position: sticky;
   top: 0;
@@ -112,10 +104,6 @@ body {
 .shop-nav button:hover {
   color: var(--lux-accent-dark);
 }
-
-/* =========================================================
-   FILTERS
-========================================================= */
 .filters-card {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -128,18 +116,14 @@ body {
   margin-bottom: 2rem;
 }
 
-/* =========================================================
-   PRODUCT GRID
-========================================================= */
+
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
 }
 
-/* =========================================================
-   PRODUCT CARD
-========================================================= */
+
 .product-card {
   background:
     linear-gradient(180deg, #ffffff 0%, #fffdfa 100%);
@@ -208,7 +192,7 @@ body {
 
 .product-price {
   font-size: 1.35rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--lux-accent-dark);
   margin-bottom: 1.25rem;
 }
@@ -222,9 +206,7 @@ body {
   flex: 1;
 }
 
-/* =========================================================
-   CART
-========================================================= */
+
 .cart-items {
   display: flex;
   flex-direction: column;
@@ -283,9 +265,7 @@ body {
   color: var(--lux-primary);
 }
 
-/* =========================================================
-   PRODUCT DETAILS
-========================================================= */
+
 .product-details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -299,9 +279,7 @@ body {
   box-shadow: var(--lux-shadow-md);
 }
 
-/* =========================================================
-   TABLES
-========================================================= */
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -325,9 +303,6 @@ body {
   letter-spacing: 0.05em;
 }
 
-/* =========================================================
-   PRINT
-========================================================= */
 @media print {
   .shop-header,
   .btn {
@@ -344,9 +319,7 @@ body {
   }
 }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+
 @media (max-width: 768px) {
   .header-inner {
     flex-direction: column;

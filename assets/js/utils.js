@@ -1,8 +1,4 @@
-// assets/js/utils.js
 
-/* =========================================================
-   FORMAT CURRENCY
-========================================================= */
 export function formatCurrency(amount) {
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -10,18 +6,14 @@ export function formatCurrency(amount) {
   }).format(Number(amount || 0));
 }
 
-/* =========================================================
-   GENERATE INVOICE NUMBER
-========================================================= */
+
 export function generateInvoiceNumber() {
   const timestamp = Date.now();
   const random = Math.floor(Math.random() * 1000);
   return `INV-${timestamp}-${random}`;
 }
 
-/* =========================================================
-   TOAST
-========================================================= */
+
 export function showToast(
   message,
   type = "success"
@@ -44,9 +36,7 @@ export function showToast(
   }, 3000);
 }
 
-/* =========================================================
-   GLOBAL LOADER
-========================================================= */
+
 export function showLoader() {
   document
     .getElementById("globalLoader")
@@ -59,9 +49,7 @@ export function hideLoader() {
     ?.classList.remove("active");
 }
 
-/* =========================================================
-   URL QUERY PARAM
-========================================================= */
+
 export function getQueryParam(name) {
   const params =
     new URLSearchParams(
@@ -71,16 +59,12 @@ export function getQueryParam(name) {
   return params.get(name);
 }
 
-/* =========================================================
-   REDIRECT
-========================================================= */
+
 export function redirect(path) {
   window.location.href = path;
 }
 
-/* =========================================================
-   DEBOUNCE
-========================================================= */
+
 export function debounce(
   fn,
   delay = 300
@@ -96,9 +80,7 @@ export function debounce(
   };
 }
 
-/* =========================================================
-   PAGINATION
-========================================================= */
+
 export function paginate(
   items = [],
   currentPage = 1,
@@ -145,9 +127,7 @@ export function paginate(
   };
 }
 
-/* =========================================================
-   RENDER PAGINATION
-========================================================= */
+
 export function renderPagination(
   container,
   currentPage,
@@ -165,7 +145,7 @@ export function renderPagination(
 
   let html = "";
 
-  // Previous button
+
   html += `
     <button
       class="btn btn-secondary btn-sm"
@@ -255,9 +235,7 @@ export function renderPagination(
     });
 }
 
-/* =========================================================
-   FORMAT DATE
-========================================================= */
+
 export function formatDate(value) {
   if (!value) return "-";
 

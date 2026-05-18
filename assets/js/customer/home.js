@@ -33,9 +33,7 @@ let filteredProducts = [];
 let currentPage = 1;
 const ITEMS_PER_PAGE = 8;
 
-/* =========================================================
-   CART BADGE
-========================================================= */
+
 export async function updateCartBadge() {
   try {
     const cart = await getCart();
@@ -63,9 +61,7 @@ export async function updateCartBadge() {
 // Make globally available
 window.updateCartBadge = updateCartBadge;
 
-/* =========================================================
-   LOAD CATEGORIES
-========================================================= */
+
 async function loadCategories() {
   if (!categoryFilter) return;
 
@@ -89,9 +85,6 @@ async function loadCategories() {
   `;
 }
 
-/* =========================================================
-   LOAD PRODUCTS
-========================================================= */
 async function loadProducts() {
   const products = await getProducts();
 
@@ -104,9 +97,7 @@ async function loadProducts() {
   applyFilters();
 }
 
-/* =========================================================
-   APPLY FILTERS
-========================================================= */
+
 function applyFilters() {
   const search =
     searchInput?.value?.trim().toLowerCase() || "";
@@ -138,13 +129,7 @@ function applyFilters() {
   renderCurrentPage();
 }
 
-/* =========================================================
-   RENDER CURRENT PAGE
-========================================================= */
-/* =========================================================
-   RENDER CURRENT PAGE
-   Replace only this function in home.js
-========================================================= */
+
 function renderCurrentPage() {
   const result = paginate(
     filteredProducts,
@@ -160,17 +145,13 @@ function renderCurrentPage() {
   const totalPages =
     result?.totalPages || 1;
 
-  // Render products
   renderProducts(pageItems);
 
-  // Clear pagination if container missing
+
   if (!paginationContainer) {
     return;
   }
 
-  // IMPORTANT:
-  // Your renderPagination() in utils.js expects:
-  // renderPagination(container, currentPage, totalPages, onPageChange)
   renderPagination(
     paginationContainer,
     currentPage,
@@ -187,9 +168,7 @@ function renderCurrentPage() {
   );
 }
 
-/* =========================================================
-   RENDER PRODUCTS
-========================================================= */
+
 function renderProducts(products = []) {
   if (!productsGrid) return;
 
@@ -264,9 +243,7 @@ function renderProducts(products = []) {
   bindAddToCartButtons();
 }
 
-/* =========================================================
-   ADD TO CART
-========================================================= */
+
 function bindAddToCartButtons() {
   document
     .querySelectorAll(".add-to-cart-btn")
@@ -317,9 +294,7 @@ function bindAddToCartButtons() {
     });
 }
 
-/* =========================================================
-   EVENTS
-========================================================= */
+
 searchInput?.addEventListener(
   "input",
   debounce(applyFilters, 300)
@@ -335,9 +310,7 @@ logoutBtn?.addEventListener(
   logout
 );
 
-/* =========================================================
-   INIT
-========================================================= */
+
 async function init() {
   await requireRole(
     USER_ROLES.CUSTOMER

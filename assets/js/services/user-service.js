@@ -13,7 +13,6 @@ import {
 
 const usersRef = collection(db, COLLECTIONS.USERS);
 
-// Get all customers only
 export async function getCustomers() {
   const q = query(
     usersRef,
@@ -29,7 +28,7 @@ export async function getCustomers() {
   }));
 }
 
-// Update customer credit limit
+
 export async function updateCustomerCreditLimit(userId, creditLimit) {
   const userRef = doc(db, COLLECTIONS.USERS, userId);
 

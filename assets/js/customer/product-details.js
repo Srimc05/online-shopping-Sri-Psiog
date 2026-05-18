@@ -10,7 +10,6 @@ import {
 import { getProductById } from "../services/product-service.js";
 import { addToCart } from "../services/cart-service.js";
 
-// DOM Elements
 const container = document.getElementById("productDetailsContainer");
 const logoutBtn = document.getElementById("logoutBtn");
 

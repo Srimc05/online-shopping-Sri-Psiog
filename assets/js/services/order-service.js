@@ -1,4 +1,4 @@
-// assets/js/services/order-service.js
+
 
 import {
   db,
@@ -22,12 +22,11 @@ import {
   runTransaction
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-// Generate invoice number
 function generateInvoiceNumber() {
   return `INV-${Date.now()}`;
 }
 
-// Place Order
+
 export async function placeOrder(cart, paymentType) {
   const user = auth.currentUser;
 
@@ -48,7 +47,7 @@ export async function placeOrder(cart, paymentType) {
       user.uid
     );
 
-    // Read user
+
     const userSnap = await transaction.get(userRef);
 
     if (!userSnap.exists()) {
@@ -57,7 +56,7 @@ export async function placeOrder(cart, paymentType) {
 
     const userData = userSnap.data();
 
-    // Read all products first
+
     const productData = [];
 
     for (const item of items) {
@@ -94,7 +93,7 @@ export async function placeOrder(cart, paymentType) {
       });
     }
 
-    // Calculate totals
+
     let subtotal = 0;
 
     for (const item of items) {
@@ -106,7 +105,7 @@ export async function placeOrder(cart, paymentType) {
     const tax = subtotal * 0.18;
     const grandTotal = subtotal + tax;
 
-    // Credit validation
+
     if (
       paymentType === PAYMENT_TYPES.CREDIT &&
       Number(userData.creditLimit || 0) <
@@ -117,7 +116,7 @@ export async function placeOrder(cart, paymentType) {
       );
     }
 
-    // Create refs
+
     const orderRef = doc(
       collection(db, COLLECTIONS.ORDERS)
     );
@@ -126,7 +125,7 @@ export async function placeOrder(cart, paymentType) {
       collection(db, COLLECTIONS.PAYMENTS)
     );
 
-    // Update stock
+ 
     for (const entry of productData) {
       transaction.update(entry.ref, {
         quantity:
@@ -136,7 +135,7 @@ export async function placeOrder(cart, paymentType) {
       });
     }
 
-    // Update credit limit if payment type is credit
+
     if (paymentType === PAYMENT_TYPES.CREDIT) {
       transaction.update(userRef, {
         creditLimit:
@@ -146,7 +145,7 @@ export async function placeOrder(cart, paymentType) {
       });
     }
 
-    // Create order
+
     const invoiceNumber = generateInvoiceNumber();
 
     transaction.set(orderRef, {
@@ -168,7 +167,7 @@ export async function placeOrder(cart, paymentType) {
       updatedAt: serverTimestamp()
     });
 
-    // Create payment record
+
     transaction.set(paymentRef, {
       orderId: orderRef.id,
       customerId: user.uid,
@@ -184,7 +183,7 @@ export async function placeOrder(cart, paymentType) {
   });
 }
 
-// Get single order by ID
+
 export async function getOrderById(orderId) {
   const orderRef = doc(
     db,
@@ -204,7 +203,6 @@ export async function getOrderById(orderId) {
   };
 }
 
-// Get all orders of currently logged-in customer
 export async function getMyOrders() {
   const user = auth.currentUser;
 

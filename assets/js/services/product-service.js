@@ -14,7 +14,6 @@ import {
 
 const productsRef = collection(db, COLLECTIONS.PRODUCTS);
 
-// Create Product
 export async function createProduct(data) {
   return await addDoc(productsRef, {
     categoryId: data.categoryId,
@@ -30,7 +29,6 @@ export async function createProduct(data) {
   });
 }
 
-// Get All Products
 export async function getProducts() {
   const q = query(productsRef, orderBy("createdAt", "desc"));
   const snapshot = await getDocs(q);
@@ -41,7 +39,6 @@ export async function getProducts() {
   }));
 }
 
-// Get Single Product
 export async function getProductById(id) {
   const snapshot = await getDoc(doc(db, COLLECTIONS.PRODUCTS, id));
 
@@ -53,7 +50,7 @@ export async function getProductById(id) {
   };
 }
 
-// Update Product
+
 export async function updateProduct(id, data) {
   const productRef = doc(db, COLLECTIONS.PRODUCTS, id);
 
@@ -69,7 +66,7 @@ export async function updateProduct(id, data) {
   });
 }
 
-// Activate / Deactivate Product
+
 export async function toggleProductStatus(id, isActive) {
   const productRef = doc(db, COLLECTIONS.PRODUCTS, id);
 

@@ -1,14 +1,8 @@
-/* =========================================================
-   GLOBAL STYLE.CSS — LUXURY HANDMADE SHIRT STORE
-   Theme: Ivory • Midnight Navy • Antique Gold
-   Font: Poppins
-========================================================= */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
 
-/* =========================================================
-   ROOT VARIABLES
-========================================================= */
+
 :root {
   /* Colors */
   --primary: #0f172a;
@@ -47,9 +41,7 @@
   --transition: all 0.3s ease;
 }
 
-/* =========================================================
-   RESET
-========================================================= */
+
 *,
 *::before,
 *::after {
@@ -78,9 +70,6 @@ body {
   line-height: 1.6;
 }
 
-/* =========================================================
-   TYPOGRAPHY
-========================================================= */
 h1,
 h2,
 h3,
@@ -113,17 +102,13 @@ a:hover {
   color: var(--accent);
 }
 
-/* =========================================================
-   CONTAINER
-========================================================= */
+
 .container {
   width: min(var(--container-width), calc(100% - 2rem));
   margin-inline: auto;
 }
 
-/* =========================================================
-   CARD
-========================================================= */
+
 .card {
   background:
     linear-gradient(180deg, #ffffff 0%, #fffdfa 100%);
@@ -139,9 +124,6 @@ a:hover {
   box-shadow: var(--shadow-lg);
 }
 
-/* =========================================================
-   FORMS
-========================================================= */
 .form-group {
   margin-bottom: 1.25rem;
 }
@@ -184,9 +166,7 @@ textarea.form-control {
   background: #ffffff;
 }
 
-/* =========================================================
-   BUTTONS
-========================================================= */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -258,9 +238,7 @@ textarea.form-control {
   border-radius: 10px;
 }
 
-/* =========================================================
-   TOAST
-========================================================= */
+
 .toast {
   position: fixed;
   top: 20px;
@@ -295,9 +273,6 @@ textarea.form-control {
   background: linear-gradient(135deg, #d97706, #b45309);
 }
 
-/* =========================================================
-   LOADER
-========================================================= */
 .loader-overlay {
   position: fixed;
   inset: 0;
@@ -329,9 +304,7 @@ textarea.form-control {
   }
 }
 
-/* =========================================================
-   PAGINATION
-========================================================= */
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -351,9 +324,7 @@ textarea.form-control {
   border-color: var(--accent);
 }
 
-/* =========================================================
-   SKELETON LOADING
-========================================================= */
+
 .skeleton {
   position: relative;
   overflow: hidden;
@@ -396,9 +367,7 @@ textarea.form-control {
   width: 60%;
 }
 
-/* =========================================================
-   TABLE
-========================================================= */
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -420,9 +389,7 @@ textarea.form-control {
   letter-spacing: 0.05em;
 }
 
-/* =========================================================
-   UTILITIES
-========================================================= */
+
 .text-center {
   text-align: center;
 }
@@ -437,9 +404,6 @@ textarea.form-control {
 .mb-3 { margin-bottom: 1.5rem; }
 .mb-4 { margin-bottom: 2rem; }
 
-/* =========================================================
-   RESPONSIVE
-========================================================= */
 @media (max-width: 768px) {
   .container {
     width: min(var(--container-width), calc(100% - 1.25rem));

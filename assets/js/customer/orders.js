@@ -9,11 +9,10 @@ import {
 
 import { getMyOrders } from "../services/order-service.js";
 
-// DOM Elements
 const ordersContainer = document.getElementById("ordersContainer");
 const logoutBtn = document.getElementById("logoutBtn");
 
-// Load orders
+
 async function loadOrders() {
   const orders = await getMyOrders();
 
@@ -77,7 +76,7 @@ async function loadOrders() {
 // Logout
 logoutBtn.addEventListener("click", logout);
 
-// Initialize page
+
 async function init() {
   await requireRole(USER_ROLES.CUSTOMER);
   await loadOrders();

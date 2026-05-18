@@ -14,7 +14,7 @@ import {
 
 const categoriesRef = collection(db, COLLECTIONS.CATEGORIES);
 
-// Create Category
+
 export async function createCategory(data) {
   return await addDoc(categoriesRef, {
     name: data.name,
@@ -25,7 +25,7 @@ export async function createCategory(data) {
   });
 }
 
-// Get All Categories
+
 export async function getCategories() {
   const q = query(categoriesRef, orderBy("createdAt", "desc"));
   const snapshot = await getDocs(q);
@@ -36,7 +36,7 @@ export async function getCategories() {
   }));
 }
 
-// Get Single Category
+
 export async function getCategoryById(id) {
   const snapshot = await getDoc(doc(db, COLLECTIONS.CATEGORIES, id));
 
@@ -48,7 +48,7 @@ export async function getCategoryById(id) {
   };
 }
 
-// Update Category
+
 export async function updateCategory(id, data) {
   const categoryRef = doc(db, COLLECTIONS.CATEGORIES, id);
 
@@ -59,7 +59,7 @@ export async function updateCategory(id, data) {
   });
 }
 
-// Toggle Active/Inactive
+
 export async function toggleCategoryStatus(id, isActive) {
   const categoryRef = doc(db, COLLECTIONS.CATEGORIES, id);
 

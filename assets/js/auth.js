@@ -1,4 +1,3 @@
-// assets/js/auth.js
 
 import {
   auth,

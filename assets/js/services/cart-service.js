@@ -9,7 +9,7 @@ import {
   deleteDoc
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-// Get current user's cart document reference
+
 function getCartRef() {
   const user = auth.currentUser;
 
@@ -20,7 +20,6 @@ function getCartRef() {
   return doc(db, COLLECTIONS.CARTS, user.uid);
 }
 
-// Get cart
 export async function getCart() {
   const cartRef = getCartRef();
   const snapshot = await getDoc(cartRef);
@@ -35,7 +34,7 @@ export async function getCart() {
   return snapshot.data();
 }
 
-// Add item to cart
+
 export async function addToCart(product, quantity = 1) {
   const cart = await getCart();
 
@@ -58,7 +57,7 @@ export async function addToCart(product, quantity = 1) {
   await saveCart(cart.items);
 }
 
-// Update item quantity
+
 export async function updateCartItem(productId, quantity) {
   const cart = await getCart();
 
@@ -73,7 +72,7 @@ export async function updateCartItem(productId, quantity) {
   await saveCart(cart.items);
 }
 
-// Remove item from cart
+
 export async function removeCartItem(productId) {
   const cart = await getCart();
 
@@ -84,13 +83,13 @@ export async function removeCartItem(productId) {
   await saveCart(cart.items);
 }
 
-// Clear cart completely
+
 export async function clearCart() {
   const cartRef = getCartRef();
   await deleteDoc(cartRef);
 }
 
-// Save cart to Firestore
+
 async function saveCart(items) {
   const user = auth.currentUser;
   const cartRef = getCartRef();
