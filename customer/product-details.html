@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product Details</title>
+  <title>Product Details | PSIZOM</title>
 
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../assets/css/customer.css" />
@@ -15,244 +15,278 @@
 
   <header class="shop-header">
     <div class="container header-inner">
-      <h1 class="shop-logo">Online Shop</h1>
+      <a href="home.html" class="shop-brand">
+        <div class="shop-brand-text">
+          <h1 class="shop-logo">PSIZOM</h1>
+        </div>
+      </a>
 
       <nav class="shop-nav">
-        <a href="home.html">Home</a>
-        <a href="cart.html">Cart</a>
-        <a href="orders.html">Orders</a>
-        <button id="logoutBtn" class="btn btn-secondary btn-sm">
+        <a href="home.html" class="nav-link">
+          <span class="nav-icon"></span>
+          <span>Home</span>
+        </a>
+
+        <a href="orders.html" class="nav-link">
+          <span class="nav-icon"></span>
+          <span>Orders</span>
+        </a>
+
+        <a href="cart.html" class="nav-link cart-link">
+          <span class="nav-icon"></span>
+          <span>Cart</span>
+          <span id="cartCountBadge" class="cart-badge">0</span>
+        </a>
+
+        <button
+          id="logoutBtn"
+          class="btn btn-secondary btn-sm nav-logout"
+          type="button"
+        >
           Logout
         </button>
       </nav>
     </div>
   </header>
 
-  <section class="container" style="padding: 2rem 0;">
+  <section class="container" style="padding: 2rem 0 3rem;">
     <div id="productDetailsContainer"></div>
   </section>
- 
-<footer
-  style="
-    margin-top: 4rem;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: rgba(255,255,255,0.85);
-    border-top: 1px solid rgba(255,255,255,0.08);
-  "
->
-  <div
-    class="container"
+
+  <footer
     style="
-      padding: 4rem 0 2rem;
+      margin-top: 4rem;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: rgba(255,255,255,0.85);
+      border-top: 1px solid rgba(255,255,255,0.08);
     "
   >
-  
-    <div
-      style="
-        display: grid;
-        grid-template-columns: 2fr 1fr 1fr 1.5fr;
-        gap: 2.5rem;
-        margin-bottom: 3rem;
-      "
-    >
-      <!-- Brand -->
-      <div>
-        <h2
+    <div class="container" style="padding: 4rem 0 2rem;">
+      <div
+        style="
+          display: grid;
+          grid-template-columns: 2fr 1fr 1fr 1.5fr;
+          gap: 2.5rem;
+          margin-bottom: 3rem;
+        "
+      >
+        <div>
+          <h2
+            style="
+              margin: 0 0 1rem;
+              font-size: 2rem;
+              font-weight: 700;
+              color: #ffffff;
+              letter-spacing: 0.04em;
+            "
+          >
+            PSIZOM
+          </h2>
+
+          <p
+            style="
+              line-height: 1.9;
+              margin-bottom: 1.5rem;
+              color: rgba(255,255,255,0.7);
+              max-width: 420px;
+            "
+          >
+            Premium handcrafted shirts designed for men who value
+            timeless elegance, precision tailoring, and exceptional comfort.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              gap: 0.75rem;
+              flex-wrap: wrap;
+            "
+          >
+            <span
+              style="
+                padding: 0.4rem 0.8rem;
+                border-radius: 999px;
+                background: rgba(212, 175, 55, 0.12);
+                color: #d4af37;
+                font-size: 0.8rem;
+                font-weight: 600;
+              "
+            >
+              Handmade
+            </span>
+
+            <span
+              style="
+                padding: 0.4rem 0.8rem;
+                border-radius: 999px;
+                background: rgba(212, 175, 55, 0.12);
+                color: #d4af37;
+                font-size: 0.8rem;
+                font-weight: 600;
+              "
+            >
+              Premium Fabrics
+            </span>
+
+            <span
+              style="
+                padding: 0.4rem 0.8rem;
+                border-radius: 999px;
+                background: rgba(212, 175, 55, 0.12);
+                color: #d4af37;
+                font-size: 0.8rem;
+                font-weight: 600;
+              "
+            >
+              Timeless Style
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <h3
+            style="
+              margin: 0 0 1rem;
+              color: #ffffff;
+              font-size: 1rem;
+            "
+          >
+            Shop
+          </h3>
+
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 0.75rem;
+            "
+          >
+            <a href="home.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Home</a>
+            <a href="cart.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Cart</a>
+            <a href="orders.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Orders</a>
+          </div>
+        </div>
+
+        <div>
+          <h3
+            style="
+              margin: 0 0 1rem;
+              color: #ffffff;
+              font-size: 1rem;
+            "
+          >
+            Company
+          </h3>
+
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 0.75rem;
+            "
+          >
+            <a href="home.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Our Story</a>
+            <a href="home.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Craftsmanship</a>
+            <a href="home.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">Collections</a>
+          </div>
+        </div>
+
+        <div>
+          <h3
+            style="
+              margin: 0 0 1rem;
+              color: #ffffff;
+              font-size: 1rem;
+            "
+          >
+            Contact
+          </h3>
+
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              gap: 0.75rem;
+              color: rgba(255,255,255,0.7);
+              line-height: 1.8;
+            "
+          >
+            <span>Chennai, India</span>
+            <span>support@psizom.com</span>
+            <span>+91 98765 43210</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="
+          border-top: 1px solid rgba(255,255,255,0.08);
+          padding-top: 1.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 1rem;
+          flex-wrap: wrap;
+        "
+      >
+        <p
           style="
-            margin: 0 0 1rem;
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffffff;
-            letter-spacing: 0.04em;
+            margin: 0;
+            color: rgba(255,255,255,0.55);
+            font-size: 0.9rem;
           "
         >
-          PSIZOM
-        </h2>
+          © 2026 PSIZOM. All rights reserved.
+        </p>
 
         <p
           style="
-            line-height: 1.9;
-            margin-bottom: 1.5rem;
-            color: rgba(255,255,255,0.7);
-            max-width: 420px;
+            margin: 0;
+            color: rgba(255,255,255,0.55);
+            font-size: 0.9rem;
           "
         >
-          Premium handcrafted shirts designed for men who value
-          timeless elegance, precision tailoring, and exceptional comfort.
+          Crafted with precision and passion.
         </p>
-
-        <div
-          style="
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-          "
-        >
-          <span
-            style="
-              padding: 0.4rem 0.8rem;
-              border-radius: 999px;
-              background: rgba(212, 175, 55, 0.12);
-              color: #d4af37;
-              font-size: 0.8rem;
-              font-weight: 600;
-            "
-          >
-            Handmade
-          </span>
-
-          <span
-            style="
-              padding: 0.4rem 0.8rem;
-              border-radius: 999px;
-              background: rgba(212, 175, 55, 0.12);
-              color: #d4af37;
-              font-size: 0.8rem;
-              font-weight: 600;
-            "
-          >
-            Premium Fabrics
-          </span>
-
-          <span
-            style="
-              padding: 0.4rem 0.8rem;
-              border-radius: 999px;
-              background: rgba(212, 175, 55, 0.12);
-              color: #d4af37;
-              font-size: 0.8rem;
-              font-weight: 600;
-            "
-          >
-            Timeless Style
-          </span>
-        </div>
-      </div>
-
-  
-      <div>
-        <h3
-          style="
-            margin: 0 0 1rem;
-            color: #ffffff;
-            font-size: 1rem;
-          "
-        >
-          Shop
-        </h3>
-
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-          "
-        >
-          <a href="home.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">
-            Home
-          </a>
-          <a href="cart.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">
-            Cart
-          </a>
-          <a href="orders.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">
-            Orders
-          </a>
-        </div>
-      </div>
-
-      <div>
-        <h3
-          style="
-            margin: 0 0 1rem;
-            color: #ffffff;
-            font-size: 1rem;
-          "
-        >
-          Company
-        </h3>
-
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-          "
-        >
-          <a href="home.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">
-            Our Story
-          </a>
-          <a href="home.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">
-            Craftsmanship
-          </a>
-          <a href="home.html" style="color: rgba(255,255,255,0.7); text-decoration: none;">
-            Collections
-          </a>
-        </div>
-      </div>
-
-    
-      <div>
-        <h3
-          style="
-            margin: 0 0 1rem;
-            color: #ffffff;
-            font-size: 1rem;
-          "
-        >
-          Contact
-        </h3>
-
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            color: rgba(255,255,255,0.7);
-            line-height: 1.8;
-          "
-        >
-            <span> Chennai, India</span>
-          <span> support@psizom.com</span>
-          <span> +91 98765 43210</span>
-        </div>
       </div>
     </div>
-
-   
-    <div
-      style="
-        border-top: 1px solid rgba(255,255,255,0.08);
-        padding-top: 1.5rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-      "
-    >
-      <p
-        style="
-          margin: 0;
-          color: rgba(255,255,255,0.55);
-          font-size: 0.9rem;
-        "
-      >
-        © 2026 PSIZOM. All rights reserved.
-      </p>
-
-      <p
-        style="
-          margin: 0;
-          color: rgba(255,255,255,0.55);
-          font-size: 0.9rem;
-        "
-      >
-        Crafted with precision and passion.
-      </p>
-    </div>
-  </div>
-</footer>
+  </footer>
 
   <script type="module" src="../assets/js/customer/product-details.js"></script>
+
+  <script type="module">
+    import { observeAuth } from "../assets/js/auth.js";
+    import { getCart } from "../assets/js/services/cart-service.js";
+
+    async function updateCartBadge() {
+      const badge = document.getElementById("cartCountBadge");
+
+      if (!badge) return;
+
+      try {
+        const cart = await getCart();
+        const items = cart?.items || [];
+
+        const totalQty = items.reduce(
+          (sum, item) => sum + Number(item.quantity || 0),
+          0
+        );
+
+        badge.textContent = totalQty;
+        badge.style.display =
+          totalQty > 0 ? "inline-flex" : "none";
+      } catch (error) {
+        badge.style.display = "none";
+      }
+    }
+
+    window.updateCartBadge = updateCartBadge;
+
+    observeAuth((user) => {
+      if (user) {
+        updateCartBadge();
+      }
+    });
+  </script>
 </body>
 </html>
