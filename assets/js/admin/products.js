@@ -1,9 +1,10 @@
-
+// assets/js/admin/products.js
 
 import { logout } from "../auth.js";
 import { requireRole } from "../guards.js";
 import { USER_ROLES } from "../constants.js";
 import { showToast, formatCurrency } from "../utils.js";
+import { uploadImage } from "../services/upload-service.js";
 
 import {
   createProduct,
@@ -25,11 +26,19 @@ const productTitleInput = document.getElementById("productTitle");
 const productDescriptionInput = document.getElementById("productDescription");
 const productQuantityInput = document.getElementById("productQuantity");
 const productPriceInput = document.getElementById("productPrice");
-const productImageInput = document.getElementById("productImage");
-const productsTableBody = document.getElementById("productsTableBody");
+
+const productImageInput = document.getElementById("productImage"); // hidden input
+const productImageFileInput =
+  document.getElementById("productImageFile");
+const productImagePreview =
+  document.getElementById("productImagePreview");
+
+const productsTableBody =
+  document.getElementById("productsTableBody");
+
 const logoutBtn = document.getElementById("logoutBtn");
 
-// Load Categories into Dropdown
+// Load Categories
 async function loadCategories() {
   const categories = await getCategories();
 
@@ -41,16 +50,42 @@ async function loadCategories() {
     <option value="">Select Category</option>
     ${activeCategories
       .map(
-        (category) =>
-          `<option value="${category.id}">
+        (category) => `
+          <option value="${category.id}">
             ${category.name}
-          </option>`
+          </option>
+        `
       )
       .join("")}
   `;
 }
 
-// Load Products Table
+// Upload Image When File Changes
+productImageFileInput?.addEventListener("change", async () => {
+  const file = productImageFileInput.files[0];
+
+  if (!file) return;
+
+  try {
+    showToast("Uploading image...");
+
+    const imageUrl = await uploadImage(file);
+
+    // Save URL in hidden input
+    productImageInput.value = imageUrl;
+
+    // Show preview
+    productImagePreview.src = imageUrl;
+    productImagePreview.style.display = "block";
+
+    showToast("Image uploaded successfully");
+  } catch (error) {
+    console.error("Image upload error:", error);
+    showToast(error.message, "error");
+  }
+});
+
+// Load Products
 async function loadProducts() {
   const products = await getProducts();
 
@@ -72,11 +107,18 @@ async function loadProducts() {
           <td>
             ${
               product.imageUrl
-                ? `<img
+                ? `
+                  <img
                     src="${product.imageUrl}"
                     alt="${product.title}"
-                    style="width:50px;height:50px;object-fit:cover;border-radius:8px;"
-                  >`
+                    style="
+                      width: 50px;
+                      height: 50px;
+                      object-fit: cover;
+                      border-radius: 8px;
+                    "
+                  />
+                `
                 : "-"
             }
           </td>
@@ -115,8 +157,9 @@ async function loadProducts() {
   bindActionButtons();
 }
 
-// Bind Edit and Toggle Buttons
+// Bind Edit / Toggle Buttons
 function bindActionButtons() {
+  // Edit
   document.querySelectorAll(".edit-btn").forEach((button) => {
     button.addEventListener("click", async () => {
       const id = button.dataset.id;
@@ -127,10 +170,25 @@ function bindActionButtons() {
       productIdInput.value = product.id;
       productCategorySelect.value = product.categoryId;
       productTitleInput.value = product.title;
-      productDescriptionInput.value = product.description || "";
+      productDescriptionInput.value =
+        product.description || "";
       productQuantityInput.value = product.quantity;
       productPriceInput.value = product.price;
-      productImageInput.value = product.imageUrl || "";
+
+      // Existing image URL
+      productImageInput.value =
+        product.imageUrl || "";
+
+      // Preview
+      if (product.imageUrl) {
+        productImagePreview.src =
+          product.imageUrl;
+        productImagePreview.style.display =
+          "block";
+      } else {
+        productImagePreview.style.display =
+          "none";
+      }
 
       window.scrollTo({
         top: 0,
@@ -139,12 +197,18 @@ function bindActionButtons() {
     });
   });
 
+  // Activate / Deactivate
   document.querySelectorAll(".toggle-btn").forEach((button) => {
     button.addEventListener("click", async () => {
       const id = button.dataset.id;
-      const currentState = button.dataset.active === "true";
+      const currentState =
+        button.dataset.active === "true";
 
-      await toggleProductStatus(id, !currentState);
+      await toggleProductStatus(
+        id,
+        !currentState
+      );
+
       showToast("Product status updated");
       await loadProducts();
     });
@@ -155,13 +219,17 @@ function bindActionButtons() {
 function resetForm() {
   productForm.reset();
   productIdInput.value = "";
+  productImageInput.value = "";
+  productImagePreview.src = "";
+  productImagePreview.style.display = "none";
 }
 
-// Handle Create / Update
+// Submit Form
 productForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const categoryId = productCategorySelect.value;
+
   const categoryName =
     productCategorySelect.options[
       productCategorySelect.selectedIndex
@@ -171,15 +239,26 @@ productForm.addEventListener("submit", async (e) => {
     categoryId,
     categoryName,
     title: productTitleInput.value.trim(),
-    description: productDescriptionInput.value.trim(),
-    quantity: productQuantityInput.value,
-    price: productPriceInput.value,
+    description:
+      productDescriptionInput.value.trim(),
+    quantity: Number(
+      productQuantityInput.value
+    ),
+    price: Number(productPriceInput.value),
     imageUrl: productImageInput.value.trim()
   };
 
+  if (!data.imageUrl) {
+    showToast("Please upload a product image", "error");
+    return;
+  }
+
   try {
     if (productIdInput.value) {
-      await updateProduct(productIdInput.value, data);
+      await updateProduct(
+        productIdInput.value,
+        data
+      );
       showToast("Product updated successfully");
     } else {
       await createProduct(data);
@@ -189,7 +268,7 @@ productForm.addEventListener("submit", async (e) => {
     resetForm();
     await loadProducts();
   } catch (error) {
-    console.error(error);
+    console.error("Save product error:", error);
     showToast(error.message, "error");
   }
 });
@@ -197,7 +276,7 @@ productForm.addEventListener("submit", async (e) => {
 // Logout
 logoutBtn.addEventListener("click", logout);
 
-// Initialize Page
+// Initialize
 async function init() {
   await requireRole(USER_ROLES.ADMIN);
   await loadCategories();

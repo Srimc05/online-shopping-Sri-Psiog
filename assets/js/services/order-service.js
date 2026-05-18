@@ -1,6 +1,8 @@
+// assets/js/services/order-service.js
+
 import {
-  auth,
   db,
+  auth,
   serverTimestamp
 } from "../firebase-config.js";
 
@@ -10,202 +12,187 @@ import {
 } from "../constants.js";
 
 import {
-  generateInvoiceNumber
-} from "../utils.js";
-
-import {
-  collection,
-  addDoc,
-  getDocs,
-  getDoc,
   doc,
-  runTransaction,
+  collection,
+  getDoc,
+  getDocs,
   query,
   where,
-  orderBy
+  orderBy,
+  runTransaction
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-// Get current user's profile
-async function getCurrentUserProfile() {
-  const userRef = doc(db, COLLECTIONS.USERS, auth.currentUser.uid);
-  const snapshot = await getDoc(userRef);
-
-  if (!snapshot.exists()) {
-    throw new Error("User profile not found");
-  }
-
-  return {
-    id: snapshot.id,
-    ...snapshot.data()
-  };
+// Generate invoice number
+function generateInvoiceNumber() {
+  return `INV-${Date.now()}`;
 }
 
-// Create order with transaction
+// Place Order
 export async function placeOrder(cart, paymentType) {
-  if (!cart.items || !cart.items.length) {
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+
+  const items = cart?.items || [];
+
+  if (!items.length) {
     throw new Error("Cart is empty");
   }
 
-  const user = auth.currentUser;
-  const userProfile = await getCurrentUserProfile();
-  const invoiceNumber = generateInvoiceNumber();
-
   return await runTransaction(db, async (transaction) => {
-    let subtotal = 0;
+    const userRef = doc(
+      db,
+      COLLECTIONS.USERS,
+      user.uid
+    );
 
-    // Validate stock and calculate subtotal
-    for (const item of cart.items) {
+    // Read user
+    const userSnap = await transaction.get(userRef);
+
+    if (!userSnap.exists()) {
+      throw new Error("User profile not found");
+    }
+
+    const userData = userSnap.data();
+
+    // Read all products first
+    const productData = [];
+
+    for (const item of items) {
       const productRef = doc(
         db,
         COLLECTIONS.PRODUCTS,
         item.productId
       );
 
-      const productSnap = await transaction.get(productRef);
+      const productSnap =
+        await transaction.get(productRef);
 
       if (!productSnap.exists()) {
-        throw new Error(`${item.title} no longer exists`);
+        throw new Error(
+          `${item.title} no longer exists`
+        );
       }
 
       const product = productSnap.data();
 
-      if (!product.isActive) {
-        throw new Error(`${item.title} is inactive`);
-      }
-
-      if (product.quantity < item.quantity) {
+      if (
+        Number(product.quantity) <
+        Number(item.quantity)
+      ) {
         throw new Error(
           `Insufficient stock for ${item.title}`
         );
       }
 
-      subtotal += item.price * item.quantity;
+      productData.push({
+        ref: productRef,
+        product,
+        item
+      });
+    }
+
+    // Calculate totals
+    let subtotal = 0;
+
+    for (const item of items) {
+      subtotal +=
+        Number(item.price) *
+        Number(item.quantity);
     }
 
     const tax = subtotal * 0.18;
     const grandTotal = subtotal + tax;
 
-    // Validate credit limit
-    if (paymentType === PAYMENT_TYPES.CREDIT) {
-      const availableCredit = userProfile.creditLimit || 0;
+    // Credit validation
+    if (
+      paymentType === PAYMENT_TYPES.CREDIT &&
+      Number(userData.creditLimit || 0) <
+        grandTotal
+    ) {
+      throw new Error(
+        "Insufficient credit limit"
+      );
+    }
 
-      if (grandTotal > availableCredit) {
-        throw new Error("Insufficient credit limit");
-      }
+    // Create refs
+    const orderRef = doc(
+      collection(db, COLLECTIONS.ORDERS)
+    );
+
+    const paymentRef = doc(
+      collection(db, COLLECTIONS.PAYMENTS)
+    );
+
+    // Update stock
+    for (const entry of productData) {
+      transaction.update(entry.ref, {
+        quantity:
+          Number(entry.product.quantity) -
+          Number(entry.item.quantity),
+        updatedAt: serverTimestamp()
+      });
+    }
+
+    // Update credit limit if payment type is credit
+    if (paymentType === PAYMENT_TYPES.CREDIT) {
+      transaction.update(userRef, {
+        creditLimit:
+          Number(userData.creditLimit || 0) -
+          grandTotal,
+        updatedAt: serverTimestamp()
+      });
     }
 
     // Create order
-    const ordersRef = collection(db, COLLECTIONS.ORDERS);
-    const orderRef = doc(ordersRef);
+    const invoiceNumber = generateInvoiceNumber();
 
-    const orderData = {
-      orderId: orderRef.id,
+    transaction.set(orderRef, {
+      orderNumber: invoiceNumber,
       invoiceNumber,
-      userId: user.uid,
-      customerName: userProfile.name || "",
-      customerEmail: userProfile.email,
-      items: cart.items,
+
+      customerId: user.uid,
+      customerName: userData.name || "",
+      customerEmail: userData.email || "",
+
+      items,
       subtotal,
       tax,
       grandTotal,
       paymentType,
-      paymentStatus:
-        paymentType === PAYMENT_TYPES.CASH
-          ? "paid"
-          : "approved",
-      createdAt: serverTimestamp()
-    };
+      status: "Placed",
 
-    transaction.set(orderRef, orderData);
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
 
     // Create payment record
-    const paymentsRef = collection(db, COLLECTIONS.PAYMENTS);
-    const paymentRef = doc(paymentsRef);
-
     transaction.set(paymentRef, {
       orderId: orderRef.id,
-      userId: user.uid,
+      customerId: user.uid,
       amount: grandTotal,
       paymentType,
-      status: orderData.paymentStatus,
+      status: "Paid",
       createdAt: serverTimestamp()
     });
 
-    // Reduce stock
-    for (const item of cart.items) {
-      const productRef = doc(
-        db,
-        COLLECTIONS.PRODUCTS,
-        item.productId
-      );
-
-      const productSnap = await transaction.get(productRef);
-      const product = productSnap.data();
-
-      transaction.update(productRef, {
-        quantity: product.quantity - item.quantity,
-        updatedAt: serverTimestamp()
-      });
-    }
-
-    // Deduct credit and record transaction
-    if (paymentType === PAYMENT_TYPES.CREDIT) {
-      const userRef = doc(
-        db,
-        COLLECTIONS.USERS,
-        user.uid
-      );
-
-      const newBalance =
-        (userProfile.creditLimit || 0) - grandTotal;
-
-      transaction.update(userRef, {
-        creditLimit: newBalance,
-        updatedAt: serverTimestamp()
-      });
-
-      const creditRef = doc(
-        collection(db, COLLECTIONS.CREDIT_TRANSACTIONS)
-      );
-
-      transaction.set(creditRef, {
-        userId: user.uid,
-        orderId: orderRef.id,
-        amount: grandTotal,
-        type: "debit",
-        balanceAfter: newBalance,
-        createdAt: serverTimestamp()
-      });
-    }
-
     return {
-      orderId: orderRef.id,
-      invoiceNumber
+      orderId: orderRef.id
     };
   });
 }
 
-// Get current user's orders
-export async function getMyOrders() {
-  const q = query(
-    collection(db, COLLECTIONS.ORDERS),
-    where("userId", "==", auth.currentUser.uid),
-    orderBy("createdAt", "desc")
-  );
-
-  const snapshot = await getDocs(q);
-
-  return snapshot.docs.map((docSnap) => ({
-    id: docSnap.id,
-    ...docSnap.data()
-  }));
-}
-
-// Get single order
+// Get single order by ID
 export async function getOrderById(orderId) {
-  const snapshot = await getDoc(
-    doc(db, COLLECTIONS.ORDERS, orderId)
+  const orderRef = doc(
+    db,
+    COLLECTIONS.ORDERS,
+    orderId
   );
+
+  const snapshot = await getDoc(orderRef);
 
   if (!snapshot.exists()) {
     return null;
@@ -215,4 +202,31 @@ export async function getOrderById(orderId) {
     id: snapshot.id,
     ...snapshot.data()
   };
+}
+
+// Get all orders of currently logged-in customer
+export async function getMyOrders() {
+  const user = auth.currentUser;
+
+  if (!user) {
+    throw new Error("User not authenticated");
+  }
+
+  const ordersRef = collection(
+    db,
+    COLLECTIONS.ORDERS
+  );
+
+  const q = query(
+    ordersRef,
+    where("customerId", "==", user.uid),
+    orderBy("createdAt", "desc")
+  );
+
+  const snapshot = await getDocs(q);
+
+  return snapshot.docs.map((docSnap) => ({
+    id: docSnap.id,
+    ...docSnap.data()
+  }));
 }

@@ -3,28 +3,226 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Online Shopping Application</title>
+  <title>Atelier Sudhan | Handcrafted Shirts</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
+    rel="stylesheet"
+  />
 
   <link rel="stylesheet" href="assets/css/style.css" />
+
+  <style>
+    .landing-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #f8f5ef;
+    }
+
+    /* Left Image Section */
+    .landing-image {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .landing-image::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          90deg,
+          rgba(15, 23, 42, 0.05),
+          rgba(15, 23, 42, 0.25)
+        );
+    }
+
+    /* Right Content Section */
+    .landing-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem;
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(176, 141, 87, 0.10),
+          transparent 30%
+        ),
+        linear-gradient(
+          135deg,
+          #faf7f2 0%,
+          #f5efe5 100%
+        );
+    }
+
+    .landing-card {
+      max-width: 540px;
+    }
+
+    .brand-label {
+      display: inline-block;
+      margin-bottom: 1rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(176, 141, 87, 0.12);
+      color: #8e6d3f;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .landing-title {
+      font-family: "Playfair Display", serif;
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      line-height: 1.08;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.03em;
+    }
+
+    .landing-title span {
+      color: #b08d57;
+    }
+
+    .landing-description {
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: #6b7280;
+      margin-bottom: 2.5rem;
+    }
+
+    .landing-description strong {
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .landing-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .landing-actions .btn {
+      min-width: 180px;
+    }
+
+    .feature-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(176, 141, 87, 0.12);
+      border-radius: 14px;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #475569;
+    }
+
+    .feature-item strong {
+      display: block;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+      font-size: 0.95rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .landing-page {
+        grid-template-columns: 1fr;
+      }
+
+      .landing-image {
+        min-height: 420px;
+      }
+
+      .landing-content {
+        padding: 3rem 1.5rem;
+      }
+
+      .landing-actions {
+        flex-direction: column;
+      }
+
+      .landing-actions .btn {
+        width: 100%;
+      }
+
+      .feature-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .landing-title {
+        font-size: 2.4rem;
+      }
+
+      .landing-description {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
 </head>
 <body>
   <div id="globalLoader" class="loader-overlay">
     <div class="spinner"></div>
   </div>
 
-  <div class="container" style="padding: 4rem 0;">
-    <div class="card" style="text-align: center; max-width: 700px; margin: 0 auto;">
-      <h1>Online Shopping Application</h1>
-      <p style="margin: 1rem 0; color: var(--text-muted);">
-        Firebase-powered e-commerce project with Admin and Customer modules.
-      </p>
-
-      <a href="login.html" class="btn btn-primary">Get Started</a>
+  <section class="landing-page">
+    <!-- Left Side Image -->
+    <div class="landing-image">
+      <img
+        src="https://firebasestorage.googleapis.com/v0/b/online-shopping-sri-psiog.firebasestorage.app/o/heroimg.jpg?alt=media&token=8e16c6fa-c773-450c-a610-6a54a3cda779"
+        alt="Handcrafted Premium Shirt"
+      />
     </div>
-  </div>
+
+    <!-- Right Side Content -->
+    <div class="landing-content">
+      <div class="landing-card">
+        <span class="brand-label">Handcrafted Luxury Shirts</span>
+
+        <h1 class="landing-title">
+          Welcome to the World of
+          <span>Hand-Stitched Elegance</span>
+        </h1>
+
+        <p class="landing-description">
+          Discover premium shirts crafted by skilled artisans using the finest
+          fabrics and timeless tailoring techniques.
+          Every stitch reflects precision, character, and uncompromising quality.
+        </p>
+
+        <div class="landing-actions">
+          <a href="login.html" class="btn btn-primary">
+            Login
+          </a>
+
+          <a href="signup.html" class="btn btn-secondary">
+            Create Account
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
 </body>
 </html>

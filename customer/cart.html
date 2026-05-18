@@ -3,39 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shopping Cart</title>
+  <title>Shopping Cart | PSIZOM</title>
 
   <link rel="stylesheet" href="../assets/css/style.css" />
   <link rel="stylesheet" href="../assets/css/customer.css" />
 </head>
 <body>
+  <!-- Global Loader -->
   <div id="globalLoader" class="loader-overlay">
     <div class="spinner"></div>
   </div>
 
+  <!-- =========================
+       HEADER
+  ========================== -->
   <header class="shop-header">
     <div class="container header-inner">
-      <h1 class="shop-logo">Online Shop</h1>
+      <!-- Brand -->
+      <a href="home.html" class="shop-brand">
+     
 
+        <div class="shop-brand-text">
+          <h1 class="shop-logo">PSIZOM</h1>
+      
+        </div>
+      </a>
+
+      <!-- Navigation -->
       <nav class="shop-nav">
-        <a href="home.html">Home</a>
-        <a href="cart.html">Cart</a>
-        <a href="orders.html">Orders</a>
-        <button id="logoutBtn" class="btn btn-secondary btn-sm">
+        <a href="home.html" class="nav-link">
+          <span class="nav-icon">🏠</span>
+          <span>Home</span>
+        </a>
+
+        <a href="orders.html" class="nav-link">
+          <span class="nav-icon">📦</span>
+          <span>Orders</span>
+        </a>
+
+        <a href="cart.html" class="nav-link cart-link active">
+          <span class="nav-icon">🛒</span>
+          <span>Cart</span>
+          <span id="cartCountBadge" class="cart-badge">0</span>
+        </a>
+
+        <button
+          id="logoutBtn"
+          class="btn btn-secondary btn-sm nav-logout"
+          type="button"
+        >
           Logout
         </button>
       </nav>
     </div>
   </header>
 
-  <section class="container" style="padding: 2rem 0;">
+  <!-- =========================
+       CART SECTION
+  ========================== -->
+  <section class="container" style="padding: 2rem 0 3rem;">
     <div class="card">
-      <h1 style="margin-bottom: 1.5rem;">Shopping Cart</h1>
+      <div style="margin-bottom: 2rem;">
+        <span
+          style="
+            display: inline-block;
+            padding: 0.35rem 0.85rem;
+            border-radius: 999px;
+            background: rgba(176, 141, 87, 0.12);
+            color: #8e6d3f;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.75rem;
+          "
+        >
+          Your Selection
+        </span>
+
+        <h1 style="margin-bottom: 0.5rem;">
+          Shopping Cart
+        </h1>
+
+        <p style="margin: 0;">
+          Review your handcrafted shirt collection before checkout.
+        </p>
+      </div>
 
       <div id="cartContainer"></div>
     </div>
   </section>
 
+  <!-- Cart Page Logic -->
   <script type="module" src="../assets/js/customer/cart.js"></script>
+
+  <!-- Cart Badge Logic -->
+  <script type="module">
+    import { observeAuth } from "../assets/js/auth.js";
+    import { getCart } from "../assets/js/services/cart-service.js";
+
+    async function updateCartBadge() {
+      const badge = document.getElementById("cartCountBadge");
+
+      if (!badge) return;
+
+      try {
+        const cart = await getCart();
+        const items = cart?.items || [];
+
+        const totalQty = items.reduce(
+          (sum, item) =>
+            sum + Number(item.quantity || 0),
+          0
+        );
+
+        badge.textContent = totalQty;
+        badge.style.display =
+          totalQty > 0 ? "inline-flex" : "none";
+      } catch (error) {
+        console.error(
+          "Failed to load cart count:",
+          error
+        );
+
+        badge.style.display = "none";
+      }
+    }
+
+    // Make available globally
+    window.updateCartBadge = updateCartBadge;
+
+    // Wait until user is authenticated
+    observeAuth((user) => {
+      if (user) {
+        updateCartBadge();
+      }
+    });
+  </script>
 </body>
 </html>
